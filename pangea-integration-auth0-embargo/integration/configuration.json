@@ -1,0 +1,17 @@
+{
+  "secrets": [    {
+        "name": "TOKEN",
+        "label": "Token",
+        "description": "Token used to authenticate to Pangea API"
+      }
+      ],
+  "configuration": [    {
+        "name": "DOMAIN",
+        "label": "Domain",
+        "description": "Pangea Organization Domain"
+      }],
+  "dependencies": [{
+        "name": "pangea-node-sdk",
+        "version": "latest" 
+      }]
+}
