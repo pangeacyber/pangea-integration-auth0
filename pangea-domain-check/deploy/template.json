@@ -1,0 +1,10 @@
+{
+  "name": "action-integration-test",
+  "runtime": "node16",
+  "supported_triggers": [
+    {
+      "id": "pre-user-registration",
+      "version": "v2"
+    }
+  ]
+}
