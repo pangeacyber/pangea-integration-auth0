@@ -2,11 +2,13 @@ exports.onExecutePostLogin = async (event, api) => {
     const Pangea = require('pangea-node-sdk');
     const token = event.secrets.TOKEN;
     const domain = event.configuration.DOMAIN;
+    const intelprovider = event.configuration.PROVIDER;
     const config = new Pangea.PangeaConfig({domain: domain});
     const audit = new Pangea.AuditService(token, config);
-    const embargo = new Pangea.EmbargoService(token, config);
+    const ipIntel = new Pangea.IPIntelService(token, config);
 
     const ip = event.request.ip;
+    const options = {provider: intelprovider, verbose: true, raw: true};
 
     let context = {
         "connection": event.connection,
@@ -15,30 +17,32 @@ exports.onExecutePostLogin = async (event, api) => {
     };
     let data = {
         "actor": event.user.email,
-        "action": "Embargo Check IP",
+        "action": "VPN Check",
         "target": event.request.hostname,
         "new": context,
         "source": ip
     };
 
-    let embargo_response;
+    let ip_response;
     try {
-        //console.log("Checking Embargo IP : '%s'", ip);
-        embargo_response = await embargo.ipCheck(ip);
-        data.new['embargo_response'] = embargo_response.gotResponse.body;
-        //console.log("Response: ", ebmargo_response.gotResponse.body);
+        //console.log("Checking IP Reputation: '%s'", ip);
+        ip_response = await ipIntel.isVPN(ip, options);
+        data.new['ip_response'] = ip_response.gotResponse.body;
+        //console.log("Response: ", ip_response.gotResponse.body);
     } catch (error) {
-        embargo_response = {"status": "Failed", "summary": error};
+        ip_response = {"status": "Failed", "summary": error};
     }
 
-    if (embargo_response.status == "Success" && embargo_response.result.count == 0) {
+
+    if (ip_response.status == "Success" && ip_response.result.data.is_vpn == false) {
         data["status"] = "Success";
-        data["message"] = "Passed Embargo Check";
+        data["message"] = "Passed VPN Check";
     } else {
-        api.access.deny('embargo_check_failed', "Login Failed");
+        api.access.deny('vpn_check_failed', "Login Failed");
         data["status"] = "Failed";
-        data["message"] = "Failed Embargo Check - " + embargo_response.summary;
+        data["message"] = "Failed VPN Check - " + ip_response.summary;
     }
+
     console.log("Pangea Execution Data: ", data);
     //const logResponse = await audit.log(data);
     //console.log("Data: ", logResponse)
