@@ -17,6 +17,6 @@
       }],
   "dependencies": [{
         "name": "pangea-node-sdk",
-        "version": "1.6.0" 
+        "version": "4.4.0" 
       }]
 }
