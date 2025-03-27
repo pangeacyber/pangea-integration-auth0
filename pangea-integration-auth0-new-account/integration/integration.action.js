@@ -1,9 +1,9 @@
 exports.onExecutePreUserRegistration = async (event, api) => {
     const Pangea = require('pangea-node-sdk');
     const token = event.secrets.TOKEN;
-    const domain = event.configuration.DOMAIN;
-    const domainintelprovider = event.configuration.DOMAIN_PROVIDER;
-    const ipintelprovider = event.configuration.IP_PROVIDER;
+    const domain = event.secrets.DOMAIN;
+    const domainintelprovider = event.secrets.DOMAIN_PROVIDER;
+    const ipintelprovider = event.secrets.IP_PROVIDER;
     const config = new Pangea.PangeaConfig({domain: domain});
     const audit = new Pangea.AuditService(token, config);
     const ipIntel = new Pangea.IPIntelService(token, config);

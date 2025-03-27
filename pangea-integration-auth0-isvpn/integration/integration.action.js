@@ -1,8 +1,8 @@
 exports.onExecutePostLogin = async (event, api) => {
     const Pangea = require('pangea-node-sdk');
     const token = event.secrets.TOKEN;
-    const domain = event.configuration.DOMAIN;
-    const intelprovider = event.configuration.PROVIDER;
+    const domain = event.secrets.DOMAIN;
+    const intelprovider = event.secrets.PROVIDER;
     const config = new Pangea.PangeaConfig({domain: domain});
     const audit = new Pangea.AuditService(token, config);
     const ipIntel = new Pangea.IPIntelService(token, config);
