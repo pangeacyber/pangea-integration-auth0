@@ -1,9 +1,9 @@
 exports.onExecutePostLogin = async (event, api) => {
     const Pangea = require('pangea-node-sdk');
     const token = event.secrets.TOKEN;
-    const domain = event.secrets.DOMAIN;
+    const domain = event?.configuration?.DOMAIN ? event.configuration.DOMAIN : event?.secrets?.DOMAIN;
     const config = new Pangea.PangeaConfig({domain: domain});
-    const audit = new Pangea.AuditService(token, config);
+    // const audit = new Pangea.AuditService(token, config);
     const embargo = new Pangea.EmbargoService(token, config);
 
     const ip = event.request.ip;
@@ -22,11 +22,11 @@ exports.onExecutePostLogin = async (event, api) => {
     };
 
     let embargo_response;
+    
     try {
-        //console.log("Checking Embargo IP : '%s'", ip);
         embargo_response = await embargo.ipCheck(ip);
+
         data.new['embargo_response'] = embargo_response.gotResponse.body;
-        //console.log("Response: ", ebmargo_response.gotResponse.body);
     } catch (error) {
         embargo_response = {"status": "Failed", "summary": error};
     }
@@ -39,7 +39,6 @@ exports.onExecutePostLogin = async (event, api) => {
         data["status"] = "Failed";
         data["message"] = "Failed Embargo Check - " + embargo_response.summary;
     }
-    console.log("Pangea Execution Data: ", data);
-    //const logResponse = await audit.log(data);
-    //console.log("Data: ", logResponse)
+    
+    // audit.log(data);
 };

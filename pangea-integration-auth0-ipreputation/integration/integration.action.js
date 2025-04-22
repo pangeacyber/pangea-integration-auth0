@@ -1,10 +1,9 @@
 exports.onExecutePostLogin = async (event, api) => {
     const Pangea = require('pangea-node-sdk');
     const token = event.secrets.TOKEN;
-    const domain = event.secrets.DOMAIN;
-    const intelprovider = event.secrets.PROVIDER;
+    const domain = event?.configuration?.DOMAIN ? event.configuration.DOMAIN : event?.secrets?.DOMAIN;
+    const intelprovider = event?.configuration?.PROVIDER ? event.configuration.PROVIDER : event?.secrets?.PROVIDER;
     const config = new Pangea.PangeaConfig({domain: domain});
-    const audit = new Pangea.AuditService(token, config);
     const ipIntel = new Pangea.IPIntelService(token, config);
 
     const ip = event.request.ip;
@@ -25,14 +24,11 @@ exports.onExecutePostLogin = async (event, api) => {
 
     let ip_response;
     try {
-        //console.log("Checking IP Reputation: '%s'", ip);
         ip_response = await ipIntel.reputation(ip, options);
         data.new['ip_response'] = ip_response.gotResponse.body;
-        //console.log("Response: ", ip_response.gotResponse.body);
     } catch (error) {
         ip_response = {"status": "Failed", "summary": error};
     }
-
 
     if (ip_response.status == "Success" && ip_response.result.data.score < 70) {
         data["status"] = "Success";
@@ -43,7 +39,5 @@ exports.onExecutePostLogin = async (event, api) => {
         data["message"] = "Failed IP Rep Check - " + ip_response.summary;
     }
 
-    console.log("Pangea Execution Data: ", data);
     //const logResponse = await audit.log(data);
-    //console.log("Data: ", logResponse)
 };
