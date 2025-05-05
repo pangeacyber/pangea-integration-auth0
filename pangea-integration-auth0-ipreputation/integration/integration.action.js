@@ -38,6 +38,4 @@ exports.onExecutePostLogin = async (event, api) => {
         data["status"] = "Failed";
         data["message"] = "Failed IP Rep Check - " + ip_response.summary;
     }
-
-    //const logResponse = await audit.log(data);
 };
