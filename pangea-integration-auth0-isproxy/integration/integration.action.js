@@ -4,11 +4,9 @@ exports.onExecutePostLogin = async (event, api) => {
     const domain = event?.configuration?.DOMAIN ? event.configuration.DOMAIN : event?.secrets?.DOMAIN;
     const intelprovider = event?.configuration?.PROVIDER ? event.configuration.PROVIDER : event?.secrets?.PROVIDER;
     const config = new Pangea.PangeaConfig({domain: domain});
-    const audit = new Pangea.AuditService(token, config);
     const ipIntel = new Pangea.IPIntelService(token, config);
 
     const ipv4Test = /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$/
-
 
     const ip = event.request.ip;
     const options = {provider: intelprovider, verbose: true, raw: true};
@@ -49,6 +47,4 @@ exports.onExecutePostLogin = async (event, api) => {
         data["status"] = "Success";
         data["message"] = "Skipped proxy check, IP not valid IPv4";
     }
-
-    await audit.log(data);
 };

@@ -5,7 +5,6 @@ exports.onExecutePreUserRegistration = async (event, api) => {
     const intelprovider = event?.configuration?.PROVIDER ? event.configuration.PROVIDER : event?.secrets?.PROVIDER;
     
     const config = new Pangea.PangeaConfig({domain: domain});
-    const audit = new Pangea.AuditService(token, config);
     const domainIntel = new Pangea.DomainIntelService(token, config);
 
     const check_domain = event.user.email.split("@")[1];
@@ -44,6 +43,4 @@ exports.onExecutePreUserRegistration = async (event, api) => {
         data["status"] = "Failed";
         data["message"] = "Failed Domain Check - " + domain_response.summary;
     }
-
-    await audit.log(data);
 };
