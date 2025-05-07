@@ -9,8 +9,8 @@ Pangea is a collection of security services, all API-based, that can quickly and
 
 To configure the integration with Pangea:
 
-1. Configure Pangea Secure Audit Log and Domain Intel following [the configuration guide](https://pangea.cloud/docs/getting-started/configure-services/).
-2. When you create your token in the guide, make sure it also has access to both Secure Audit Log and Domain Intel 
+1. Configure Pangea Domain Intel following [the configuration guide](https://pangea.cloud/docs/getting-started/configure-services/).
+2. When you create your token in the guide, make sure it has access to Domain Intel 
 3. Save your Pangea token and Pangea domain
 4. Select your provider for Domain Intel
 
@@ -22,7 +22,7 @@ To configure the integration with Pangea:
 1. Read the necessary access requirements, and select **Continue**
 1. Configure the integration using the following fields:
    * DOMAIN - The Pangea domain for the organization
-   * TOKEN - The token that you saved from the Pangea configuration guide which has access to Secure Audit Log and Domain Intel
+   * TOKEN - The token that you saved from the Pangea configuration guide which has access to Domain Intel
    * PROVIDER - The selected provider for Domain Intel (e.g. domaintools)
 1. Add the integration to your Library by selecting **Create**
 1. In the modal that appears, select the **Add to flow** link
@@ -32,7 +32,7 @@ To configure the integration with Pangea:
 ## Results
 
 Once the Action is added, Pangea APIs will be used to perform domain intel checks on new user account creation flows.
-The user will either be allowed to continue, or denied. The results of any action will be written to Pangea Secure Audit Log.
+The user will either be allowed to continue, or denied.
 
 ## Troubleshooting
 
