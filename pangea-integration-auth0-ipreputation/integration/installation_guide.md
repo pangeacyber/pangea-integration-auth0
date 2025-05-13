@@ -9,7 +9,7 @@ Pangea is a collection of security services, all API-based, that can quickly and
 
 To configure the integration with Pangea:
 
-1. Configure Pangea IP Intel following [the configuration guide](https://pangea.cloud/docs/getting-started/configure-services/).
+1. Configure Pangea IP Intel following [the configuration guide](https://pangea.cloud/docs/admin-guide/services/).
 2. When you create your token in the guide, make sure it has access to IP Intel 
 3. Save your Pangea token and Pangea domain
 4. Select your provider for IP Intel
